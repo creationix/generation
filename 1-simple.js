@@ -1,3 +1,6 @@
+// Run in worker on tedit in firefox
+// or if in chrome/chrome-app and generators aren't working, use eval-in-main.
+
 function* main() {
   console.log("Hello");
   console.log("YIELD", yield sleep(1000));
