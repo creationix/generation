@@ -9,7 +9,7 @@ var ƒ = (function () {
 }());
 
 run(main2, end);
-
+t
 function* main() {
   return ƒ(function (callback) {
     setTimeout(function () {
