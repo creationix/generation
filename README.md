@@ -1,6 +1,11 @@
 generation
 ==========
 
+-
+- callbacks
+- promises
+- generators
+
  - thunk - in functional programming, an anonymous function with all input arguments already partially applied
  - continuable - function that takes a single argument, the node style callback
 
