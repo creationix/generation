@@ -42,6 +42,15 @@
         line-height: 0.8em;
       }
       .inverse p { font-size: 1.25em; }
+      .remark-slide-content li {
+        font-size: 1.4em;
+        line-height: 1.75em;
+      }
+
+      .remark-slide-content li p,
+      .remark-slide-content li li {
+        font-size: 1em;
+      }
 
       /* Slide-specific styling */
       #slide-inverse .footnote {
@@ -152,21 +161,131 @@ var data = yield* readfile("myfile.txt");
 ```
 
 ---
-
 ## Why would you want to do this?
+--
+
+ - Blocking code is much easier to reason about.
+--
+
+ - You can use `for(;;)`, `while()`, `try..catch` and it work with I/O.
+--
+
+ - You can make decisions based on I/O results with normal `if()` statements.
+--
+
+ - Because you'll eventually add a feature that requires doing I/O
+---
+
+## A Simple Task
+
+ - Given `domain` and `path` construct an http or https url string.
+
+```js
+var secure = {
+  "creationix.com": true,
+  "tedit.creationix.com": true,
+};
+function getUrl(domain, path) {
+  return (secure[domain] ? "https" : "http") +
+    "://" + domain + path;
+}
+var url = getUrl("creationix.com", "/index.html");
+var child = window.open(url);
+```
+
+---
+
+## The Task Evolves
 
 --
 
-- Blocking code is much easier to reason about.
-
+ - Boss learns about service oriented architectures.
 --
 
-- You can use `for(;;)`, `while()`, `try..catch` and it work across I/O
-
+ - The scope of the project increases and the whitelist is no longer static
 --
 
-- You can make decisions based on I/O results with normal `if()` statements.
+ - A Service is deployed to query if a domain should be secure or not.
+---
 
+
+## The Task Evolved (callbacks)
+
+ - The secure property is looked up in a service call.
+
+```js
+function getUrl(domain, path, callback) {
+  lookupSecure(domain, function (err, isSecure) {
+    if (err) return callback(err);
+    var result = (isSecure ? "https" : "http") +
+      "://" + domain + path;
+    callback(null, result);
+  });
+}
+getUrl("creationix.com", "/index.html", function (err, url) {
+  if (err) return handleError(err);
+  var child = window.open(url);
+  routeResponse(null, child);
+});
+```
+---
+
+## The Task Evolved (generators)
+
+ - The service call is implemented as a generator
+
+```js
+function* getUrl(domain, path) {
+
+  var isSecure = yield* lookupSecure(domain);
+
+  return (isSecure ? "https" : "http") +
+    "://" + domain + path;
+}
+
+var url = yield* getUrl(
+  "creationix.com", "/index.html");
+
+var child = window.open(url);
+```
+
+---
+
+## Interfacing with existing code.
+
+ - You can also consume traditional callback code.
+
+```js
+function* lookupSecure(domain) {
+  return yield function (callback) {
+    service.lookupSecure(domain, callback);
+  };
+}
+```
+
+---
+
+## Interfacing with existing code.
+
+ - Or expose as callback based exports.
+
+```js
+function getUrl(domain, path, callback) {
+  run(function* () {
+    var isSecure = yield* lookupSecure(domain);
+    return (isSecure ? "https" : "http") +
+      "://" + domain + path;
+  }, callback);
+});
+```
+
+---
+
+name: how
+class: center, middle, inverse
+
+# ES6 Generators
+How does it work.red.bold[?]  Let's step back a bit.
 
 
     </textarea>
