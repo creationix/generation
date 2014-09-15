@@ -3,6 +3,7 @@
   <head>
     <title>ES6 Generators</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet" href="hybrid.min.css">
     <style type="text/css">
       @import url(fonts.css);
 
@@ -14,47 +15,23 @@
         font-weight: 400;
         margin-bottom: 0;
       }
-      .remark-slide-content p { font-size: 1.25em; }
-      .remark-slide-content h1 { font-size: 5em; }
-      .remark-slide-content h2 { font-size: 2em; }
+      .remark-slide-content p  { font-size: 1.5em; }
+      .remark-slide-content h1 {
+        font-size: 5em;
+        line-height: 1em;
+      }
+      .remark-slide-content h2 { font-size: 3em; }
       .remark-slide-content h3 { font-size: 2.6em; }
+      .remark-slide-content pre code {
+        font-size: 1.25em;
+      }
       .footnote {
         position: absolute;
         bottom: 3em;
       }
-      li p { font-size: 1.5em; line-height: 1.75em; }
       .red { color: #fa0000; }
       .large { font-size: 2.5em; }
-      a, a > code {
-        color: rgb(249, 38, 114);
-        text-decoration: none;
-      }
-      code {
-        -moz-border-radius: 5px;
-        -web-border-radius: 5px;
-        background: #e7e8e2;
-        border-radius: 5px;
-      }
-      .remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; }
       .remark-code-line-highlighted     { background-color: #373832; }
-      .pull-left {
-        float: left;
-        width: 47%;
-      }
-      .pull-right {
-        float: right;
-        width: 47%;
-      }
-      .pull-right ~ p {
-        clear: both;
-      }
-      #slideshow .slide .content code {
-        font-size: 0.8em;
-      }
-      #slideshow .slide .content pre code {
-        font-size: 0.9em;
-        padding: 15px;
-      }
       .inverse {
         background: #272822;
         color: #777872;
@@ -64,6 +41,7 @@
         color: #f3f3f3;
         line-height: 0.8em;
       }
+      .inverse p { font-size: 1.25em; }
 
       /* Slide-specific styling */
       #slide-inverse .footnote {
@@ -76,6 +54,7 @@
         top:  151px;
         right: 140px;
       }
+
       #slide-how .slides h3 {
         margin-top: 0.2em;
       }
@@ -100,23 +79,6 @@
         z-index: 0;
       }
 
-      /* Two-column layout */
-      .left-column {
-        color: #777;
-        width: 20%;
-        height: 92%;
-        float: left;
-      }
-        .left-column h2:last-of-type, .left-column h3:last-child {
-          color: #000;
-        }
-      .right-column {
-        width: 75%;
-        float: right;
-        padding-top: 1em;
-      }
-
-
     </style>
   </head>
   <body>
@@ -130,22 +92,91 @@ The .red.bold[future] is finally here and it's .red.bold[great]!
 .footnote[.red[@]creationix]
 ---
 
-# Agenda
+## Coroutines
 
-1. Introduction
-2. Deep-dive
-3. ...
-4.
+Imagine if you could do this.
+
+```js
+var uv = require('uv');
+
+function readfile(path) {
+  var fd = uv.open(path, "r", 0644);
+  var stat = uv.fs_fstat(fd);
+  var chunk = uv.read(fd, stat.size, 0);
+  uv.fs_close(fd);
+  return chunk;
+}
+
+var data = readfile("myfile.txt");
+```
+
+Without actually blocking the event loop!
+
+---
+## Coroutines
+
+You can in Lua thanks to coroutines.
+
+```lua
+local uv = require('uv')
+
+function readfile(path)
+  local fd = uv.open(path, "r", "644")
+  local stat = uv.fs_fstat(fd);
+  local chunk = uv.read(fd, stat.size, 0)
+  uv.fs_close(fd)
+  return chunk
+end
+
+local data = readfile("myfile.txt")
+```
 
 ---
 
-# Introduction
+## Generators
+
+We can too with `function*` and `yield`.
+
+```js
+var uv = require('uv');
+
+function* readfile(path) {
+  var fd = yield uv.open(path, "r", "644");
+  var stat = yield uv.fs_fstat(fd);
+  var chunk = yield uv.read(fd, stat.size, 0);
+  yield uv.fs_close(fd);
+  return chunk;
+}
+
+var data = yield* readfile("myfile.txt");
+```
+
+---
+
+## Why would you want to do this?
+
+--
+
+- Blocking code is much easier to reason about.
+
+--
+
+- You can use `for(;;)`, `while()`, `try..catch` and it work across I/O
+
+--
+
+- You can make decisions based on I/O results with normal `if()` statements.
+
+
 
     </textarea>
-    <script src="remark-latest.min.js" type="text/javascript">
-    </script>
+    <script src="remark-latest.min.js" type="text/javascript"></script>
+    <script src="highlight-min.js"></script>
+
     <script type="text/javascript">
-      var slideshow = remark.create();
+      var slideshow = remark.create({
+        highlightStyle: 'hybrid',
+      });
     </script>
   </body>
 </html>
