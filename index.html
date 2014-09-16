@@ -287,6 +287,398 @@ class: center, middle, inverse
 # ES6 Generators
 How does it work.red.bold[?]  Let's step back a bit.
 
+---
+
+## EcmaScript
+
+ - This is the language known as JavaScript.
+--
+
+ - It specifies things like functions, loops, variable scope, exception behavior.
+--
+
+ - It does **not** contain I/O or any concurrency model.
+--
+
+ - ES6 is the next version and includes a new control-flow primitive, **generators**.
+
+---
+
+## The Event Loop
+
+ - Node.js and browsers both use a single-threaded event-loop model.
+--
+
+ - This requires that slow operations never block the main thread.
+--
+
+ - Event order is sometimes hard to predict, but only one event can
+   be processed at a time.
+
+---
+
+## Step Through
+
+```js
+function greet(message) {
+  console.log("Before");
+  setTimeout(function () {
+    console.log(message);
+  }, 100);
+  console.log("After");
+}
+*greet("delayed");
+```
+
+---
+## Step Through
+
+```js
+*function greet(message) {
+  console.log("Before");
+  setTimeout(function () {
+    console.log(message);
+  }, 100);
+  console.log("After");
+}
+greet("delayed");
+```
+
+---
+## Step Through
+
+```js
+function greet(message) {
+*  console.log("Before");
+  setTimeout(function () {
+    console.log(message);
+  }, 100);
+  console.log("After");
+}
+greet("delayed");
+```
+
+---
+## Step Through
+
+```js
+function greet(message) {
+  console.log("Before");
+*  setTimeout(function () {
+    console.log(message);
+  }, 100);
+  console.log("After");
+}
+greet("delayed");
+```
+---
+## Step Through
+
+```js
+function greet(message) {
+  console.log("Before");
+  setTimeout(function () {
+    console.log(message);
+  }, 100);
+*  console.log("After");
+}
+greet("delayed");
+```
+---
+## Step Through
+
+```js
+function greet(message) {
+  console.log("Before");
+  setTimeout(function () {
+    console.log(message);
+  }, 100);
+  console.log("After");
+}
+greet("delayed");
+```
+---
+## Step Through
+
+```js
+function greet(message) {
+  console.log("Before");
+  setTimeout(function () {
+*    console.log(message);
+  }, 100);
+  console.log("After");
+}
+greet("delayed");
+```
+---
+## Step Through
+
+```js
+function greet(message) {
+  console.log("Before");
+  setTimeout(function () {
+    console.log(message);
+  }, 100);
+  console.log("After");
+}
+greet("delayed");
+```
+---
+## Step Through Generator
+
+```js
+function* count(n) {
+  var i = 0;
+  while (i < n) {
+    yield i++;
+  }
+  return n;
+}
+*var gen = count(2);
+console.log(gen.next());
+console.log(gen.next());
+console.log(gen.next());
+```
+---
+## Step Through Generator
+
+```js
+*function* count(n) {
+  var i = 0;
+  while (i < n) {
+    yield i++;
+  }
+  return n;
+}
+var gen = count(2);
+console.log(gen.next());
+console.log(gen.next());
+console.log(gen.next());
+```
+---
+## Step Through Generator
+
+```js
+function* count(n) {
+  var i = 0;
+  while (i < n) {
+    yield i++;
+  }
+  return n;
+}
+var gen = count(2);
+*console.log(gen.next());
+console.log(gen.next());
+console.log(gen.next());
+```
+---
+## Step Through Generator
+
+```js
+function* count(n) {
+*  var i = 0;
+  while (i < n) {
+    yield i++;
+  }
+  return n;
+}
+var gen = count(2);
+console.log(gen.next());
+console.log(gen.next());
+console.log(gen.next());
+```
+---
+## Step Through Generator
+
+```js
+function* count(n) {
+  var i = 0;
+*  while (i < n) {
+    yield i++;
+  }
+  return n;
+}
+var gen = count(2);
+console.log(gen.next());
+console.log(gen.next());
+console.log(gen.next());
+```
+---
+## Step Through Generator
+
+```js
+function* count(n) {
+  var i = 0;
+  while (i < n) {
+*    yield i++;
+  }
+  return n;
+}
+var gen = count(2);
+console.log(gen.next());
+console.log(gen.next());
+console.log(gen.next());
+```
+---
+## Step Through Generator
+
+```js
+function* count(n) {
+  var i = 0;
+  while (i < n) {
+    yield i++;
+  }
+  return n;
+}
+var gen = count(2);
+*console.log(gen.next()); // { value: 0, done: false }
+console.log(gen.next());
+console.log(gen.next());
+```
+---
+## Step Through Generator
+
+```js
+function* count(n) {
+  var i = 0;
+  while (i < n) {
+    yield i++;
+  }
+  return n;
+}
+var gen = count(2);
+console.log(gen.next()); // { value: 0, done: false }
+*console.log(gen.next());
+console.log(gen.next());
+```
+---
+## Step Through Generator
+
+```js
+function* count(n) {
+  var i = 0;
+*  while (i < n) {
+    yield i++;
+  }
+  return n;
+}
+var gen = count(2);
+console.log(gen.next()); // { value: 0, done: false }
+console.log(gen.next());
+console.log(gen.next());
+```
+---
+## Step Through Generator
+
+```js
+function* count(n) {
+  var i = 0;
+  while (i < n) {
+*    yield i++;
+  }
+  return n;
+}
+var gen = count(2);
+console.log(gen.next()); // { value: 0, done: false }
+console.log(gen.next());
+console.log(gen.next());
+```
+---
+## Step Through Generator
+
+```js
+function* count(n) {
+  var i = 0;
+  while (i < n) {
+    yield i++;
+  }
+  return n;
+}
+var gen = count(2);
+console.log(gen.next()); // { value: 0, done: false }
+*console.log(gen.next()); // { value: 1, done: false }
+console.log(gen.next());
+```
+---
+## Step Through Generator
+
+```js
+function* count(n) {
+  var i = 0;
+  while (i < n) {
+    yield i++;
+  }
+  return n;
+}
+var gen = count(2);
+console.log(gen.next()); // { value: 0, done: false }
+console.log(gen.next()); // { value: 1, done: false }
+*console.log(gen.next());
+```
+---
+## Step Through Generator
+
+```js
+function* count(n) {
+  var i = 0;
+*  while (i < n) {
+    yield i++;
+  }
+  return n;
+}
+var gen = count(2);
+console.log(gen.next()); // { value: 0, done: false }
+console.log(gen.next()); // { value: 1, done: false }
+console.log(gen.next());
+```
+---
+## Step Through Generator
+
+```js
+function* count(n) {
+  var i = 0;
+  while (i < n) {
+    yield i++;
+  }
+*  return n;
+}
+var gen = count(2);
+console.log(gen.next()); // { value: 0, done: false }
+console.log(gen.next()); // { value: 1, done: false }
+console.log(gen.next());
+```
+---
+## Step Through Generator
+
+```js
+function* count(n) {
+  var i = 0;
+  while (i < n) {
+    yield i++;
+  }
+  return n;
+}
+var gen = count(2);
+console.log(gen.next()); // { value: 0, done: false }
+console.log(gen.next()); // { value: 1, done: false }
+*console.log(gen.next()); // { value: 2, done: true }
+```
+---
+## Step Through Generator
+
+```js
+function* count(n) {
+  var i = 0;
+  while (i < n) {
+    yield i++;
+  }
+  return n;
+}
+var gen = count(2);
+console.log(gen.next()); // { value: 0, done: false }
+console.log(gen.next()); // { value: 1, done: false }
+console.log(gen.next()); // { value: 2, done: true }
+```
 
     </textarea>
     <script src="remark-latest.min.js" type="text/javascript"></script>
