@@ -410,6 +410,10 @@ function greet(message) {
 }
 greet("delayed");
 ```
+
+```js
+"delayed"
+```
 ---
 ## Step Through
 
@@ -422,6 +426,10 @@ function greet(message) {
   console.log("After");
 }
 greet("delayed");
+```
+
+```js
+"delayed"
 ```
 ---
 ## Step Through Generator
@@ -531,9 +539,13 @@ function* count(n) {
   return n;
 }
 var gen = count(2);
-*console.log(gen.next()); // { value: 0, done: false }
+*console.log(gen.next());
 console.log(gen.next());
 console.log(gen.next());
+```
+
+```js
+{ value: 0, done: false }
 ```
 ---
 ## Step Through Generator
@@ -547,9 +559,13 @@ function* count(n) {
   return n;
 }
 var gen = count(2);
-console.log(gen.next()); // { value: 0, done: false }
+console.log(gen.next());
 *console.log(gen.next());
 console.log(gen.next());
+```
+
+```js
+{ value: 0, done: false }
 ```
 ---
 ## Step Through Generator
@@ -563,9 +579,13 @@ function* count(n) {
   return n;
 }
 var gen = count(2);
-console.log(gen.next()); // { value: 0, done: false }
 console.log(gen.next());
 console.log(gen.next());
+console.log(gen.next());
+```
+
+```js
+{ value: 0, done: false }
 ```
 ---
 ## Step Through Generator
@@ -579,9 +599,13 @@ function* count(n) {
   return n;
 }
 var gen = count(2);
-console.log(gen.next()); // { value: 0, done: false }
 console.log(gen.next());
 console.log(gen.next());
+console.log(gen.next());
+```
+
+```js
+{ value: 0, done: false }
 ```
 ---
 ## Step Through Generator
@@ -595,25 +619,35 @@ function* count(n) {
   return n;
 }
 var gen = count(2);
-console.log(gen.next()); // { value: 0, done: false }
-*console.log(gen.next()); // { value: 1, done: false }
 console.log(gen.next());
-```
----
-## Step Through Generator
-
-```js
-function* count(n) {
-  var i = 0;
-  while (i < n) {
-    yield i++;
-  }
-  return n;
-}
-var gen = count(2);
-console.log(gen.next()); // { value: 0, done: false }
-console.log(gen.next()); // { value: 1, done: false }
 *console.log(gen.next());
+console.log(gen.next());
+```
+
+```js
+{ value: 0, done: false }
+{ value: 1, done: false }
+```
+---
+## Step Through Generator
+
+```js
+function* count(n) {
+  var i = 0;
+  while (i < n) {
+    yield i++;
+  }
+  return n;
+}
+var gen = count(2);
+console.log(gen.next());
+console.log(gen.next());
+*console.log(gen.next());
+```
+
+```js
+{ value: 0, done: false }
+{ value: 1, done: false }
 ```
 ---
 ## Step Through Generator
@@ -627,9 +661,14 @@ function* count(n) {
   return n;
 }
 var gen = count(2);
-console.log(gen.next()); // { value: 0, done: false }
-console.log(gen.next()); // { value: 1, done: false }
 console.log(gen.next());
+console.log(gen.next());
+console.log(gen.next());
+```
+
+```js
+{ value: 0, done: false }
+{ value: 1, done: false }
 ```
 ---
 ## Step Through Generator
@@ -643,25 +682,14 @@ function* count(n) {
 *  return n;
 }
 var gen = count(2);
-console.log(gen.next()); // { value: 0, done: false }
-console.log(gen.next()); // { value: 1, done: false }
+console.log(gen.next());
+console.log(gen.next());
 console.log(gen.next());
 ```
----
-## Step Through Generator
 
 ```js
-function* count(n) {
-  var i = 0;
-  while (i < n) {
-    yield i++;
-  }
-  return n;
-}
-var gen = count(2);
-console.log(gen.next()); // { value: 0, done: false }
-console.log(gen.next()); // { value: 1, done: false }
-*console.log(gen.next()); // { value: 2, done: true }
+{ value: 0, done: false }
+{ value: 1, done: false }
 ```
 ---
 ## Step Through Generator
@@ -675,9 +703,37 @@ function* count(n) {
   return n;
 }
 var gen = count(2);
-console.log(gen.next()); // { value: 0, done: false }
-console.log(gen.next()); // { value: 1, done: false }
-console.log(gen.next()); // { value: 2, done: true }
+console.log(gen.next());
+console.log(gen.next());
+*console.log(gen.next());
+```
+
+```js
+{ value: 0, done: false }
+{ value: 1, done: false }
+{ value: 2, done: true }
+```
+---
+## Step Through Generator
+
+```js
+function* count(n) {
+  var i = 0;
+  while (i < n) {
+    yield i++;
+  }
+  return n;
+}
+var gen = count(2);
+console.log(gen.next());
+console.log(gen.next());
+console.log(gen.next());
+```
+
+```js
+{ value: 0, done: false }
+{ value: 1, done: false }
+{ value: 2, done: true }
 ```
 
     </textarea>
