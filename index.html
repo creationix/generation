@@ -205,7 +205,7 @@ var child = window.open(url);
  - The scope of the project increases and the whitelist is no longer static
 --
 
- - A Service is deployed to query if a domain should be secure or not.
+ - A service is deployed to query if a domain should be secure or not.
 ---
 
 
@@ -276,10 +276,8 @@ function getUrl(domain, path, callback) {
     return (isSecure ? "https" : "http") +
       "://" + domain + path;
   }, callback);
-});
+}
 ```
-
----
 
 name: how
 class: center, middle, inverse
@@ -735,6 +733,458 @@ console.log(gen.next());
 { value: 1, done: false }
 { value: 2, done: true }
 ```
+
+---
+## Sleeping the Coroutine
+
+```js
+var it = main();
+it.next();
+
+function* main() {
+  console.log("Hello");
+  // Set a timer and wait for it.
+  setTimeout(function () {
+    it.next();
+  }, 1000);
+  yield;
+  console.log("Goodbye");
+}
+```
+---
+## Sleeping the Coroutine
+
+```js
+*var it = main();
+it.next();
+
+function* main() {
+  console.log("Hello");
+  // Set a timer and wait for it.
+  setTimeout(function () {
+    it.next();
+  }, 1000);
+  yield;
+  console.log("Goodbye");
+}
+```
+---
+## Sleeping the Coroutine
+
+```js
+var it = main();
+*it.next();
+
+function* main() {
+  console.log("Hello");
+  // Set a timer and wait for it.
+  setTimeout(function () {
+    it.next();
+  }, 1000);
+  yield;
+  console.log("Goodbye");
+}
+```
+---
+## Sleeping the Coroutine
+
+```js
+var it = main();
+it.next();
+
+function* main() {
+*  console.log("Hello");
+  // Set a timer and wait for it.
+  setTimeout(function () {
+    it.next();
+  }, 1000);
+  yield;
+  console.log("Goodbye");
+}
+```
+
+```js
+"Hello"
+```
+---
+## Sleeping the Coroutine
+
+```js
+var it = main();
+it.next();
+
+function* main() {
+  console.log("Hello");
+  // Set a timer and wait for it.
+*  setTimeout(function () {
+    it.next();
+  }, 1000);
+  yield;
+  console.log("Goodbye");
+}
+```
+
+```js
+"Hello"
+```
+---
+## Sleeping the Coroutine
+
+```js
+var it = main();
+it.next();
+
+function* main() {
+  console.log("Hello");
+  // Set a timer and wait for it.
+  setTimeout(function () {
+    it.next();
+  }, 1000);
+*  yield;
+  console.log("Goodbye");
+}
+```
+
+```js
+"Hello"
+```
+---
+## Sleeping the Coroutine
+
+```js
+var it = main();
+it.next();
+
+function* main() {
+  console.log("Hello");
+  // Set a timer and wait for it.
+  setTimeout(function () {
+    it.next();
+  }, 1000);
+  yield;
+  console.log("Goodbye");
+}
+```
+
+```js
+"Hello"
+```
+---
+## Sleeping the Coroutine
+
+```js
+var it = main();
+it.next();
+
+function* main() {
+  console.log("Hello");
+  // Set a timer and wait for it.
+  setTimeout(function () {
+*    it.next();
+  }, 1000);
+  yield;
+  console.log("Goodbye");
+}
+```
+
+```js
+"Hello"
+```
+---
+## Sleeping the Coroutine
+
+```js
+var it = main();
+it.next();
+
+function* main() {
+  console.log("Hello");
+  // Set a timer and wait for it.
+  setTimeout(function () {
+    it.next();
+  }, 1000);
+  yield;
+*  console.log("Goodbye");
+}
+```
+
+```js
+"Hello"
+"Goodbye"
+```
+---
+## Sleeping the Coroutine
+
+```js
+var it = main();
+it.next();
+
+function* main() {
+  console.log("Hello");
+  // Set a timer and wait for it.
+  setTimeout(function () {
+    it.next();
+  }, 1000);
+  yield;
+  console.log("Goodbye");
+}
+```
+
+```js
+"Hello"
+"Goodbye"
+```
+---
+## Sleeping with Libraries
+
+```js
+run(function* () {
+  console.log("Before");
+  yield sleep(100);
+  console.log("After");
+}, function () {
+  console.log("Done");
+});
+
+function sleep(ms) {
+  return function (callback) {
+    setTimeout(callback, ms);
+  };
+}
+```
+---
+## Sleeping with Libraries
+
+```js
+*run(function* () {
+  console.log("Before");
+  yield sleep(100);
+  console.log("After");
+}, function () {
+  console.log("Done");
+});
+
+function sleep(ms) {
+  return function (callback) {
+    setTimeout(callback, ms);
+  };
+}
+```
+---
+## Sleeping with Libraries
+
+```js
+run(function* () {
+*  console.log("Before");
+  yield sleep(100);
+  console.log("After");
+}, function () {
+  console.log("Done");
+});
+
+function sleep(ms) {
+  return function (callback) {
+    setTimeout(callback, ms);
+  };
+}
+```
+
+```js
+"Before"
+```
+---
+## Sleeping with Libraries
+
+```js
+run(function* () {
+  console.log("Before");
+*  yield sleep(100);
+  console.log("After");
+}, function () {
+  console.log("Done");
+});
+
+function sleep(ms) {
+  return function (callback) {
+    setTimeout(callback, ms);
+  };
+}
+```
+
+```js
+"Before"
+```
+---
+## Sleeping with Libraries
+
+```js
+run(function* () {
+  console.log("Before");
+  yield sleep(100);
+  console.log("After");
+}, function () {
+  console.log("Done");
+});
+
+function sleep(ms) {
+*  return function (callback) {
+    setTimeout(callback, ms);
+  };
+}
+```
+
+```js
+"Before"
+```
+---
+## Sleeping with Libraries
+
+```js
+run(function* () {
+  console.log("Before");
+  yield sleep(100);
+  console.log("After");
+}, function () {
+  console.log("Done");
+});
+
+function sleep(ms) {
+  return function (callback) {
+*    setTimeout(callback, ms);
+  };
+}
+```
+
+```js
+"Before"
+```
+---
+## Sleeping with Libraries
+
+```js
+run(function* () {
+  console.log("Before");
+  yield sleep(100);
+  console.log("After");
+}, function () {
+  console.log("Done");
+});
+
+function sleep(ms) {
+  return function (callback) {
+    setTimeout(callback, ms);
+  };
+}
+```
+
+```js
+"Before"
+```
+---
+## Sleeping with Libraries
+
+```js
+run(function* () {
+  console.log("Before");
+  yield sleep(100);
+*  console.log("After");
+}, function () {
+  console.log("Done");
+});
+
+function sleep(ms) {
+  return function (callback) {
+    setTimeout(callback, ms);
+  };
+}
+```
+
+```js
+"Before"
+"After"
+```
+---
+## Sleeping with Libraries
+
+```js
+run(function* () {
+  console.log("Before");
+  yield sleep(100);
+  console.log("After");
+}, function () {
+*  console.log("Done");
+});
+
+function sleep(ms) {
+  return function (callback) {
+    setTimeout(callback, ms);
+  };
+}
+```
+
+```js
+"Before"
+"After"
+"Done"
+```
+---
+## Sleeping with Libraries
+
+```js
+run(function* () {
+  console.log("Before");
+  yield sleep(100);
+  console.log("After");
+}, function () {
+  console.log("Done");
+});
+
+function sleep(ms) {
+  return function (callback) {
+    setTimeout(callback, ms);
+  };
+}
+```
+---
+
+## A Generic Helper
+
+```js
+function run(fn, onDone) {
+  // Activate the generator function
+  var it = fn();
+  go();
+  function go() {
+    // Start or resume the generator
+    var out = it.next();
+    // If it's done, return and report.
+    if (out.done) onDone();
+    // Otherwise, inject go as callback
+    else out.value(go);
+  }
+}
+```
+---
+
+## Two way Data Transfer
+
+```js
+function *readFile(path) {
+  var fd = yield fs.open(path, "r", 0644);
+  var stat = yield fs.stat(fd);
+  var body = yield fs.read(fd, stat.size, 0);
+  yield fs.close(fd);
+  return body;
+}
+
+run(function *() {
+  console.log("Reading myfile.txt");
+  var body = yield* readFile("myfile.txt");
+  console.log(body);
+});
+```
+
+
 
     </textarea>
     <script src="remark-latest.min.js" type="text/javascript"></script>
