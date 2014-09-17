@@ -279,6 +279,8 @@ function getUrl(domain, path, callback) {
 }
 ```
 
+---
+
 name: how
 class: center, middle, inverse
 
@@ -1165,8 +1167,252 @@ function run(fn, onDone) {
 }
 ```
 ---
-
 ## Two way Data Transfer
+
+```js
+function* add() {
+  var a = yield "a";
+  var b = yield "b";
+  return a + b;
+}
+var it = add();
+var a = it.next();
+console.log(a);
+var b = it.next(1);
+console.log(b);
+var r = it.next(2);
+console.log(r);
+```
+---
+## Two way Data Transfer
+
+```js
+function* add() {
+  var a = yield "a";
+  var b = yield "b";
+  return a + b;
+}
+*var it = add();
+var a = it.next();
+console.log(a);
+var b = it.next(1);
+console.log(b);
+var r = it.next(2);
+console.log(r);
+```
+---
+## Two way Data Transfer
+
+```js
+function* add() {
+  var a = yield "a";
+  var b = yield "b";
+  return a + b;
+}
+var it = add();
+*var a = it.next();
+console.log(a);
+var b = it.next(1);
+console.log(b);
+var r = it.next(2);
+console.log(r);
+```
+---
+## Two way Data Transfer
+
+```js
+function* add() {
+*  var a = yield "a";
+  var b = yield "b";
+  return a + b;
+}
+var it = add();
+var a = it.next();
+console.log(a);
+var b = it.next(1);
+console.log(b);
+var r = it.next(2);
+console.log(r);
+```
+---
+## Two way Data Transfer
+
+```js
+function* add() {
+  var a = yield "a";
+  var b = yield "b";
+  return a + b;
+}
+var it = add();
+var a = it.next();
+*console.log(a);
+var b = it.next(1);
+console.log(b);
+var r = it.next(2);
+console.log(r);
+```
+
+```js
+{ value: "a", done: false }
+```
+---
+## Two way Data Transfer
+
+```js
+function* add() {
+  var a = yield "a";
+  var b = yield "b";
+  return a + b;
+}
+var it = add();
+var a = it.next();
+console.log(a);
+*var b = it.next(1);
+console.log(b);
+var r = it.next(2);
+console.log(r);
+```
+
+```js
+{ value: "a", done: false }
+```
+---
+## Two way Data Transfer
+
+```js
+function* add() {
+  var a = yield "a";
+*  var b = yield "b";
+  return a + b;
+}
+var it = add();
+var a = it.next();
+console.log(a);
+var b = it.next(1);
+console.log(b);
+var r = it.next(2);
+console.log(r);
+```
+
+```js
+{ value: "a", done: false }
+```
+---
+## Two way Data Transfer
+
+```js
+function* add() {
+  var a = yield "a";
+  var b = yield "b";
+  return a + b;
+}
+var it = add();
+var a = it.next();
+console.log(a);
+var b = it.next(1);
+*console.log(b);
+var r = it.next(2);
+console.log(r);
+```
+
+```js
+{ value: "a", done: false }
+{ value: "b", done: false }
+```
+---
+## Two way Data Transfer
+
+```js
+function* add() {
+  var a = yield "a";
+  var b = yield "b";
+  return a + b;
+}
+var it = add();
+var a = it.next();
+console.log(a);
+var b = it.next(1);
+console.log(b);
+*var r = it.next(2);
+console.log(r);
+```
+
+```js
+{ value: "a", done: false }
+{ value: "b", done: false }
+```
+---
+## Two way Data Transfer
+
+```js
+function* add() {
+  var a = yield "a";
+  var b = yield "b";
+*  return a + b;
+}
+var it = add();
+var a = it.next();
+console.log(a);
+var b = it.next(1);
+console.log(b);
+var r = it.next(2);
+console.log(r);
+```
+
+```js
+{ value: "a", done: false }
+{ value: "b", done: false }
+```
+---
+## Two way Data Transfer
+
+```js
+function* add() {
+  var a = yield "a";
+  var b = yield "b";
+  return a + b;
+}
+var it = add();
+var a = it.next();
+console.log(a);
+var b = it.next(1);
+console.log(b);
+var r = it.next(2);
+*console.log(r);
+```
+
+```js
+{ value: "a", done: false }
+{ value: "b", done: false }
+{ value: 3, done: true }
+```
+---
+## Two way Data Transfer
+
+```js
+function* add() {
+  var a = yield "a";
+  var b = yield "b";
+  return a + b;
+}
+var it = add();
+var a = it.next();
+console.log(a);
+var b = it.next(1);
+console.log(b);
+var r = it.next(2);
+console.log(r);
+```
+
+```js
+{ value: "a", done: false }
+{ value: "b", done: false }
+{ value: 3, done: true }
+```
+---
+
+
+## Blocking I/O
 
 ```js
 function *readFile(path) {
@@ -1184,7 +1430,14 @@ run(function *() {
 });
 ```
 
+---
 
+class: center, middle, inverse
+
+# ES6 Generators
+Using generators with existing libraries!
+
+---
 
     </textarea>
     <script src="remark-latest.min.js" type="text/javascript"></script>
