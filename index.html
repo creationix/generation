@@ -1434,14 +1434,168 @@ run(function *() {
 
 class: center, middle, inverse
 
-# ES6 Generators
-Using generators with existing libraries!
+# Koa
+Next generation web framework for node.js
 
 ---
 
+## Koa Basic App
+
+ - Middleware are written as generators
+ - No `next()` like in connect.
+ - Uses `co` yield handler.
+
+```js
+var koa = require('koa');
+var app = koa();
+
+app.use(function *(){
+  this.body = 'Hello World';
+});
+
+app.listen(3000);
+```
+
+---
+
+## Koa middlewares
+
+ - Pre and post hooks using normal blocking code
+
+```js
+app.use(function *(next){
+  var start = new Date;
+  yield next;
+  var ms = new Date - start;
+  this.set('X-Response-Time', ms + 'ms');
+});
+
+app.use(function *(next){
+  var start = new Date;
+  yield next;
+  var ms = new Date - start;
+  console.log('%s %s - %s', this.method, this.url, ms);
+});
+```
+
+---
+
+class: center, middle, inverse
+
+# JS-Git
+Git internals implemented in pure JS
+
+---
+
+## JS-Git Hybrid APIs
+
+ - Can be consumed with normal callback style
+
+```js
+var fsDb = require('git-node-fs/mixins/fs-db');
+var repo = {};
+fsDb(repo, "pato/to/repo.git");
+
+repo.readRef("refs/heads/master", onMaster);
+
+function onMaster(err, master) {
+  if (err) throw err;
+  repo.loadAs("commit", master, onCommit);
+}
+function onCommit(err, commit) {
+  if (err) throw err;
+  repo.loadAs("tree", commit.tree, onTree);
+}
+```
+
+---
+
+## JS-Git Hybrid APIs
+
+ - Or can be consumed using generators and `gen-run`
+
+```js
+var run = require('gen-run');
+var fsDb = require('git-node-fs/mixins/fs-db');
+
+var repo = {};
+fsDb(repo, "pato/to/repo.git");
+
+run(function* () {
+  var master, commit, tree;
+  master = yield repo.readRef("refs/heads/master");
+  commit = yield repo.loadAs("commit", master);
+  tree = yield repo.loadAs("tree", commit.tree);
+});
+```
+
+---
+
+## Writing Hybrid APIs
+
+ - Creating hybrid APIs is trivial with continuables.
+ - Add one line at top to partially apply the function if no callback is passed in.
+
+```js
+function readRef(ref, callback) {
+  if (!callback) return readRef.bind(this, ref);
+  // Now you have callback for either style
+}
+```
+
+```js
+// Can use either style.
+var ref = yield readRef("some/ref");
+readRef("some/ref", onRef);
+```
+
+---
+
+class: center, middle, inverse
+
+# Using Generators
+Can you use this technology today.red[.bold[?]]
+
+---
+
+## Where are ES6 generators implemented?
+
+--
+
+- In Firefox 26+
+--
+
+- In node 0.11.x with `--harmony` flag
+--
+
+- In chrome with user-set harmony flag.
+--
+
+- Yesterday generators in v8/chrome graduated to stable without flag.
+--
+
+- IE and Safari are working on it.
+
+---
+
+## What about others?
+--
+
+- Facebook wrote regenerator which compiles from ES6 to ES5 allowing use in
+  virtually all modern runtimes.
+--
+
+- Grunt, Gulp, Browserify, Tedit, etc all integrate.
+--
+
+- You can compile on-the-fly in the client.
+--
+
+- You can detect if the browser supports generators and serve a different script.
+
+
     </textarea>
     <script src="remark-latest.min.js" type="text/javascript"></script>
-    <script src="highlight-min.js"></script>
 
     <script type="text/javascript">
       var slideshow = remark.create({
